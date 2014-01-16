@@ -12,7 +12,5 @@
   ],
   "project_page": "http://github.com/GM-Alex/puppet-phpbrew",
   "license": "Apache License, Version 2.0",
-  "checksums": {
-  },
-  "name": "phpbrew"
+  "name": "puppet-phpbrew"
 }

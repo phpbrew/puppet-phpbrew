@@ -12,7 +12,7 @@
 #  class { 'phpbrew': }
 #
 class phpbrew (
-  $dependencies = undef
+
 ) {
   case $operatingsystem {
     centos, redhat: {
@@ -21,16 +21,16 @@ class phpbrew (
     debian, ubuntu: {
       exec { '/usr/bin/apt-get -y update': }
 
-      if ! $dependencies {
-        $neededDependencies = [ 'autoconf', 'automake', 'curl', 'build-essential', 'libxslt1-dev', 're2c', 'libxml2-dev', 'php5-cli', 'libmcrypt-dev' ]
-      } else {
-        $neededDependencies = $dependencies
-      }
+      $dependencies = [ 'autoconf', 'automake', 'curl', 'build-essential', 'libxslt1-dev', 're2c', 'libxml2-dev', 'php5-cli', 'libmcrypt-dev' ]
 
-      package { $neededDependencies:
-        ensure  => 'installed',
-        require => Exec['/usr/bin/apt-get -y update'],
-        before  => Exec['download phpbrew'],
+      each($dependencies) |$dependency| {
+        if ! defined(Package[$dependency]) {
+          package { $dependency:
+            ensure  => 'installed',
+            require => Exec['/usr/bin/apt-get -y update'],
+            before  => Exec['download phpbrew'],
+          }
+        }
       }
 
       exec { '/usr/bin/apt-get -y build-dep php5':

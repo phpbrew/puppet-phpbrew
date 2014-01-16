@@ -18,7 +18,7 @@ define phpbrew::install(
   $version = '',
   $default_path = '/opt/phpbrew'
 ) {
-  #require phpbrew
+  require phpbrew
 
   if $version == '' {
     $php_version = $title

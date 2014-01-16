@@ -26,7 +26,7 @@ define phpbrew::extension(
   }
 
   if ! $php_version {
-    warning('No version for extension given. Install aborted.')
+    warning('No php version for extension given. Install aborted.')
   } else {
     exec { "phpbrew_extension_${extension_name}-${php_version}-${version}":
       command => "/root/.phpbrew/install_extension.sh ${php_version} ${extension_name} ${version}",
