@@ -12,7 +12,7 @@
 #  class { 'phpbrew': }
 #
 class phpbrew (
-
+  $php_install_dir = '/opt/phpbrew'
 ) {
   case $operatingsystem {
     centos, redhat: {
@@ -61,14 +61,14 @@ class phpbrew (
     refreshonly => true,
   }
 
-  file { '/opt/phpbrew':
+  file { $php_install_dir:
     ensure => 'directory',
     require => Exec['init phpbrew'],
   }
 
   # Specify where versions of PHP will be installed.
   file { "/root/.phpbrew/init":
-    content => 'export PHPBREW_ROOT=/opt/phpbrew',
+    content => "export PHPBREW_ROOT=${php_install_dir}",
     require => Exec['init phpbrew']
   }
 

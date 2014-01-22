@@ -5,30 +5,55 @@ Puppet module for phpbrew.
 
 ## Usage
 
-	class { 'phpdecoder':
-		$php_version => '5.3',
-		$type        => 'zend',
-	}
+	phpbrew::install{ '5.3.27':
+      $version = '',
+      $build_prameters = undef,
+      $php_inis = undef,
+      $install_dir = '/opt/phpbrew',
+    )
 
 
 ## Configuration
 
-You can additional define apache modules and php conf.d directory:
+You can additional define the version (if the name should be different), the build parameters, the php ini files you want to copy and the install directory:
 
-	class { 'phpdecoder':
-	    $php_version => '5.3',
-	    $type        => 'zend',
-		$modules_dir => '/etc/apache2/modules/zgl/',
-        $php_ini_dir => '/etc/php5/apache2/conf.d/'
-	}
-
+	phpbrew::install{ 'php-5.3.27':
+      $version => '5.3.27',
+      $build_prameters => '+mysql',
+      $php_inis => [
+        '/etc/php5/mods-available/custom.ini'
+      ],
+      $install_dir => '/opt/custom_dir',
+    )
 
 Default values:
 
-    $php_version = '5.3'
-    $type        = 'zend'
-    $modules_dir = '/etc/apache2/modules/zgl/'
-    $php_ini_dir = '/etc/php5/apache2/conf.d/'
+    $version = '',
+    $build_prameters = undef
+    $php_inis = undef
+    $install_dir = '/opt/phpbrew'
+
+
+## Install php extension
+
+### Usage
+
+    define phpbrew::extension{ 'xdebug':
+      $php_version = '5.3.27',
+    )
+
+Note the php version is required and the php version must be installed by php brew.
+
+
+### Configuration
+
+You can additional define the extension name (if the name should be different), the version (if now version is given the latest will used), the build parameters and the install directory:
+
+Default values:
+
+    $extension = undef
+    $version = undef
+    $install_dir = '/opt/phpbrew'
 
 
 ## License

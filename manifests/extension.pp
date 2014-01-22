@@ -17,7 +17,8 @@
 define phpbrew::extension(
   $extension = undef,
   $php_version = undef,
-  $version = undef
+  $version = undef,
+  $install_dir = '/opt/phpbrew',
 ) {
   if ! $extension {
     $extension_name = $title
@@ -32,7 +33,7 @@ define phpbrew::extension(
       command => "/root/.phpbrew/install_extension.sh ${php_version} ${extension_name} ${version}",
       timeout => 0,
       user    => 'root',
-      creates => "/opt/phpbrew/php/php-${php_version}/var/db/${extension_name}.ini",
+      creates => "${install_dir}/php/php-${php_version}/var/db/${extension_name}.ini",
       notify  => Service['httpd']
     }
   }

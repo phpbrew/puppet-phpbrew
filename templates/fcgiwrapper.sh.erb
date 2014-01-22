@@ -8,4 +8,4 @@ export PHP_FCGI_CHILDREN
 PHP_FCGI_MAX_REQUESTS=10000
 export PHP_FCGI_MAX_REQUESTS
 
-exec <%= @default_path %>/php/php-<%= @php_version %>/bin/php-cgi
+exec <%= @install_dir %>/php/php-<%= @php_version %>/bin/php-cgi
