@@ -21,7 +21,7 @@ class phpbrew (
     debian, ubuntu: {
       exec { '/usr/bin/apt-get -y update': }
 
-      $dependencies = [ 'autoconf', 'automake', 'curl', 'build-essential', 'libxslt1-dev', 're2c', 'libxml2-dev', 'php5-cli', 'libmcrypt-dev' ]
+      $dependencies = [ 'autoconf', 'automake', 'curl', 'build-essential', 'libxslt1-dev', 're2c', 'libxml2-dev', 'php5-cli', 'libmcrypt-dev', 'php5-dev' ]
 
       each($dependencies) |$dependency| {
         if ! defined(Package[$dependency]) {
