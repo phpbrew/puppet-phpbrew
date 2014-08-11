@@ -37,7 +37,7 @@ define phpbrew::install(
   }
 
   exec { "install php-${php_version}":
-    command     => "sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --old php-${php_version} +default +intl +cgi ${extra_params}",
+    command     => "sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --old php-${php_version} +default +intl ${extra_params}",
     creates     => "${install_dir}/php/php-${php_version}/bin/php",
     timeout     => 0,
   }
