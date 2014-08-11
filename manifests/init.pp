@@ -44,7 +44,7 @@ class phpbrew (
   }
 
   exec { 'download phpbrew':
-    command => '/usr/bin/curl -o /tmp/phpbrew https://raw.github.com/c9s/phpbrew/master/phpbrew',
+    command => '/usr/bin/wget -P /tmp https://raw.github.com/c9s/phpbrew/master/phpbrew',
     creates => '/tmp/phpbrew',
   }
 
