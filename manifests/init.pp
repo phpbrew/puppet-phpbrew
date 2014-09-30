@@ -55,7 +55,7 @@ class phpbrew (
   }
 
   exec { 'init phpbrew':
-    command     => 'sudo /usr/bin/phpbrew init',
+    command     => '/usr/bin/sudo /usr/bin/phpbrew init',
     creates     => "/root/.phpbrew/bashrc",
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
@@ -80,7 +80,7 @@ class phpbrew (
   }
 
   exec { 'update basbrc':
-    command => "bash"
+    command => "/bin/bash"
   }
 
   file { "/root/.phpbrew/install_extension.sh":
