@@ -7,7 +7,7 @@ Puppet module for phpbrew.
 
 	phpbrew::install{ '5.3.27':
       $version = '',
-      $build_prameters = undef,
+      $build_parameters = undef,
       $php_inis = undef,
       $install_dir = '/opt/phpbrew',
     )
@@ -19,7 +19,7 @@ You can additional define the version (if the name should be different), the bui
 
 	phpbrew::install{ 'php-5.3.27':
       $version => '5.3.27',
-      $build_prameters => '+mysql',
+      $build_parameters => '+mysql',
       $php_inis => [
         '/etc/php5/mods-available/custom.ini'
       ],
@@ -29,7 +29,7 @@ You can additional define the version (if the name should be different), the bui
 Default values:
 
     $version = '',
-    $build_prameters = undef
+    $build_parameters = undef
     $php_inis = undef
     $install_dir = '/opt/phpbrew'
 

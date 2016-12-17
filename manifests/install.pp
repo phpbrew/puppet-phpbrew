@@ -16,7 +16,7 @@
 #
 define phpbrew::install(
   $version = '',
-  $build_prameters = undef,
+  $build_parameters = undef,
   $php_inis = undef,
   $install_dir = '/opt/phpbrew',
 ) {
@@ -28,8 +28,8 @@ define phpbrew::install(
     $php_version = $version
   }
 
-  if $build_prameters {
-    $extra_params = $build_prameters
+  if $build_parameters {
+    $extra_params = $build_parameters
   } elsif versioncmp($php_version, '5.3') < 0 {
     $extra_params = ''
   } else {
