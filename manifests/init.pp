@@ -14,14 +14,25 @@
 class phpbrew (
   $php_install_dir = '/opt/phpbrew'
 ) {
-  case $operatingsystem {
+  case $::operatingsystem {
     centos, redhat: {
       fail('CentOS or RedHat are not supported yet')
     }
     debian, ubuntu: {
       exec { '/usr/bin/apt-get -y update': }
 
-      $dependencies = [ 'autoconf', 'automake', 'curl', 'build-essential', 'libxslt1-dev', 're2c', 'libxml2-dev', 'php5-cli', 'libmcrypt-dev', 'php5-dev' ]
+      $dependencies = [
+        'autoconf',
+        'automake',
+        'curl',
+        'build-essential',
+        'libxslt1-dev',
+        're2c',
+        'libxml2-dev',
+        'php5-cli',
+        'libmcrypt-dev',
+        'php5-dev'
+      ]
 
       each($dependencies) |$dependency| {
         if ! defined(Package[$dependency]) {
