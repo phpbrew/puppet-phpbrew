@@ -56,37 +56,37 @@ class phpbrew (
 
   exec { 'init phpbrew':
     command     => '/usr/bin/sudo /usr/bin/phpbrew init',
-    creates     => "/root/.phpbrew/bashrc",
+    creates     => '/root/.phpbrew/bashrc',
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
   }
 
   file { $php_install_dir:
-    ensure => 'directory',
+    ensure  => 'directory',
     require => Exec['init phpbrew'],
   }
 
   # Specify where versions of PHP will be installed.
-  file { "/root/.phpbrew/init":
+  file { '/root/.phpbrew/init':
     content => "export PHPBREW_ROOT=${php_install_dir}",
     require => Exec['init phpbrew']
   }
 
   # Load phpbrew configuration by default.
   file_line { 'add phpbrew to bashrc':
-    path => '/root/.bashrc',
-    line => "source /root/.phpbrew/bashrc",
+    path    => '/root/.bashrc',
+    line    => 'source /root/.phpbrew/bashrc',
     require => Exec['init phpbrew'],
   }
 
   exec { 'update basbrc':
-    command => "/bin/bash"
+    command => '/bin/bash'
   }
 
-  file { "/root/.phpbrew/install_extension.sh":
+  file { '/root/.phpbrew/install_extension.sh':
     ensure  => present,
     mode    => 'a+x',
-    source  => "puppet:///modules/phpbrew/install_extension.sh",
+    source  => 'puppet:///modules/phpbrew/install_extension.sh',
     require => Exec['init phpbrew']
   }
 }
