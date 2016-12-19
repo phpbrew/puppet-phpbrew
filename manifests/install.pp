@@ -16,7 +16,7 @@
 #
 define phpbrew::install(
   $version = '',
-  $build_prameters = undef,
+  $build_parameters = undef,
   $php_inis = undef,
   $install_dir = '/opt/phpbrew',
 ) {
@@ -28,8 +28,8 @@ define phpbrew::install(
     $php_version = $version
   }
 
-  if $build_prameters {
-    $extra_params = $build_prameters
+  if $build_parameters {
+    $extra_params = $build_parameters
   } elsif versioncmp($php_version, '5.3') < 0 {
     $extra_params = ''
   } else {
@@ -37,20 +37,20 @@ define phpbrew::install(
   }
 
   exec { "install php-${php_version}":
-    command     => "/usr/bin/sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --old php-${php_version} +default +intl ${extra_params}",
-    creates     => "${install_dir}/php/php-${php_version}/bin/php",
-    timeout     => 0,
+    command => "/usr/bin/sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --old php-${php_version} +default +intl ${extra_params}",
+    creates => "${install_dir}/php/php-${php_version}/bin/php",
+    timeout => 0,
   }
 
   file { "/usr/lib/cgi-bin/fcgiwrapper-${php_version}.sh":
-    ensure => present,
-    content => template("phpbrew/fcgiwrapper.sh.erb"),
+    ensure  => present,
+    content => template('phpbrew/fcgiwrapper.sh.erb'),
     mode    => 'a+x',
     require => Exec["install php-${php_version}"]
   }
 
   file { "${install_dir}/php/php-${php_version}/lib/php/share":
-    ensure  => "directory",
+    ensure  => 'directory',
     require => Exec["install php-${php_version}"]
   }
 
@@ -59,7 +59,7 @@ define phpbrew::install(
       "${install_dir}/php/php-${php_version}/var",
       "${install_dir}/php/php-${php_version}/var/db"
     ]:
-      ensure  => "directory",
+      ensure  => 'directory',
       require => Exec["install php-${php_version}"]
     }
 
