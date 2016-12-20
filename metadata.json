@@ -1,8 +1,8 @@
 {
   "description": "Puppet module for phpbrew.",
-  "summary": "phpbrew for puppet",
+  "summary": "Puppet module for phpbrew.",
   "source": "https://github.com/phpbrew/puppet-phpbrew",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "Alexander Schneider",
   "dependencies": [
 
@@ -12,5 +12,5 @@
   ],
   "project_page": "http://github.com/phpbrew/puppet-phpbrew",
   "license": "Apache License, Version 2.0",
-  "name": "puppet-phpbrew"
+  "name": "gmalex-phpbrew"
 }

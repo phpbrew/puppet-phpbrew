@@ -74,5 +74,4 @@ Default values:
 
 ## Copyright
 
-	Alexander Schneider - Jankowfsky AG
-	www.jankowfsky.com
+	Alexander Schneider
