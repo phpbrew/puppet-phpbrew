@@ -15,8 +15,37 @@ class phpbrew (
   $php_install_dir = '/opt/phpbrew'
 ) {
   case $::operatingsystem {
-    centos, redhat: {
-      fail('CentOS or RedHat are not supported yet')
+    centos: {
+      if $::operatingsystemmajrelease == '7' {
+        $dependencies = [
+          'curl',
+          'libxslt-devel',
+          're2c',
+          'libxml2-devel',
+          'php-cli',
+          'libmcrypt-devel',
+          'php-devel',
+          'openssl-devel',
+          'bzip2-devel',
+          'libicu-devel',
+          'readline-devel'
+        ]
+
+        exec { 'Installing Development Tools package group':
+          command => '/usr/bin/yum -y groupinstall Development Tools'
+        }
+
+        each($dependencies) |$dependency| {
+          if ! defined(Package[$dependency]) {
+            package { $dependency:
+              ensure => 'installed',
+              before => Exec['download phpbrew'],
+            }
+          }
+        }
+      } else {
+        fail("CentOS support only tested on major version 7, you are running version '${::operatingsystemmajrelease}'")
+      }
     }
     debian, ubuntu: {
       exec { '/usr/bin/apt-get -y update': }
@@ -49,6 +78,9 @@ class phpbrew (
         before  => Exec['download phpbrew'],
       }
     }
+    redhat: {
+      fail('RedHat is not supported yet')
+    }
     default: {
       fail('Unrecognized operating system for phpbrew')
     }
@@ -73,6 +105,11 @@ class phpbrew (
   }
 
   file { $php_install_dir:
+    ensure  => 'directory',
+    require => Exec['init phpbrew'],
+  }
+
+  file { '/usr/lib/cgi-bin':
     ensure  => 'directory',
     require => Exec['init phpbrew'],
   }
