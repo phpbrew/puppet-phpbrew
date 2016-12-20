@@ -1,9 +1,9 @@
 {
   "description": "Puppet module for phpbrew.",
-  "summary": "UNKNOWN",
-  "source": "UNKNOWN",
+  "summary": "phpbrew for puppet",
+  "source": "https://github.com/phpbrew/puppet-phpbrew",
   "version": "1.0.0",
-  "author": "Jankowfsky AG - Alexander Schneider",
+  "author": "Alexander Schneider",
   "dependencies": [
 
   ],
