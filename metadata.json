@@ -10,7 +10,7 @@
   "types": [
 
   ],
-  "project_page": "http://github.com/GM-Alex/puppet-phpbrew",
+  "project_page": "http://github.com/phpbrew/puppet-phpbrew",
   "license": "Apache License, Version 2.0",
   "name": "puppet-phpbrew"
 }
