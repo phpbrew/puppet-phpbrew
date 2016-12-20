@@ -10,7 +10,7 @@ Puppet module for phpbrew.
       $build_parameters = undef,
       $php_inis = undef,
       $install_dir = '/opt/phpbrew',
-    )
+    }
 
 
 ## Configuration
@@ -24,7 +24,7 @@ You can additional define the version (if the name should be different), the bui
         '/etc/php5/mods-available/custom.ini'
       ],
       $install_dir => '/opt/custom_dir',
-    )
+    }
 
 Default values:
 
@@ -40,7 +40,7 @@ Default values:
 
     define phpbrew::extension{ 'xdebug':
       $php_version = '5.3.27',
-    )
+    }
 
 Note the php version is required and the php version must be installed by php brew.
 
