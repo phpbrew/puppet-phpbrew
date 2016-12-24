@@ -19,6 +19,7 @@ define phpbrew::install(
   $build_parameters = undef,
   $php_inis = undef,
   $install_dir = '/opt/phpbrew',
+  $jobs = $::processorcount,
 ) {
   require phpbrew
 
@@ -37,7 +38,7 @@ define phpbrew::install(
   }
 
   exec { "install php-${php_version}":
-    command => "/usr/bin/sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --old php-${php_version} +default +intl ${extra_params}",
+    command => "/usr/bin/sudo PHPBREW_ROOT=${install_dir} /usr/bin/phpbrew install --jobs=${jobs} --old php-${php_version} +default +intl ${extra_params}",
     creates => "${install_dir}/php/php-${php_version}/bin/php",
     timeout => 0,
   }
