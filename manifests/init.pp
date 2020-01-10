@@ -28,7 +28,12 @@ class phpbrew (
           'openssl-devel',
           'bzip2-devel',
           'libicu-devel',
-          'readline-devel'
+          'readline-devel',
+          
+          'httpd-devel', 
+          'libcurl-devel',
+          'oniguruma-devel',
+          'libsodium-devel'
         ]
 
         exec { 'Installing Development Tools package group':
@@ -98,8 +103,8 @@ class phpbrew (
   }
 
   exec { 'init phpbrew':
-    command     => '/usr/bin/sudo /usr/bin/phpbrew init',
-    creates     => '~/.phpbrew/bashrc',
+    command     => '/usr/bin/sudo /usr/bin/phpbrew init --root=/opt/phpbrew',
+    creates     => '/opt/phpbrew/bashrc',
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
   }
@@ -115,12 +120,12 @@ class phpbrew (
   }
 
   # Specify where versions of PHP will be installed.
-  file { '~/.phpbrew/init':
+  file { '/opt/phpbrew/init':
     content => "export PHPBREW_ROOT=${php_install_dir}",
     require => Exec['init phpbrew']
   }->
-  file_line { 'Append a line to ~/.phpbrew/init':
-    path => '~/.phpbrew/init',
+  file_line { 'Append a line to /opt/phpbrew/init':
+    path => '/opt/phpbrew/init',
     line => 'export PHPBREW_HOME=${php_install_dir}',
   }
 
@@ -132,18 +137,18 @@ class phpbrew (
   }
   
   # Load phpbrew configuration by default.
-  file_line { 'add phpbrew to bashrc':
-    path    => '~/.bashrc',
-    line    => 'source ~/.phpbrew/bashrc',
-    require => Exec['init phpbrew'],
-  }
+#  file_line { 'add phpbrew to bashrc':
+#    path    => '~/.bashrc',
+#    line    => 'source ~/.phpbrew/bashrc',
+#    require => Exec['init phpbrew'],
+#  }
 
   
   exec { 'update basbrc':
     command => '/bin/bash'
   }
 
-  file { '~/.phpbrew/install_extension.sh':
+  file { '/opt/phpbrew/install_extension.sh':
     ensure  => present,
     mode    => 'a+x',
     source  => 'puppet:///modules/phpbrew/install_extension.sh',
