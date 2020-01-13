@@ -103,7 +103,7 @@ class phpbrew (
   }
 
   exec { 'init phpbrew':
-    command     => '/usr/bin/sudo /usr/bin/phpbrew init --root=/opt/phpbrew',
+    command     => '/usr/bin/sudo /usr/bin/phpbrew init',
     creates     => '/opt/phpbrew/bashrc',
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
