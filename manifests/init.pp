@@ -12,7 +12,9 @@
 #  class { 'phpbrew': }
 #
 class phpbrew (
-  $php_install_dir = '/opt/phpbrew'
+  String $php_install_dir = '/opt/phpbrew',
+  Boolean $system_wide = false,
+  Array $additional_dependencies = []
 ) {
   case $::operatingsystem {
     centos: {
@@ -28,13 +30,8 @@ class phpbrew (
           'openssl-devel',
           'bzip2-devel',
           'libicu-devel',
-          'readline-devel',
-          
-          'httpd-devel', 
-          'libcurl-devel',
-          'oniguruma-devel',
-          'libsodium-devel'
-        ]
+          'readline-devel'
+        ] + $additional_dependencies
 
         exec { 'Installing Development Tools package group':
           command => '/usr/bin/yum -y groupinstall Development Tools'
@@ -104,7 +101,7 @@ class phpbrew (
 
   exec { 'init phpbrew':
     command     => '/usr/bin/sudo /usr/bin/phpbrew init',
-    creates     => '/opt/phpbrew/bashrc',
+    creates     => '/root/.phpbrew/bashrc',
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
   }
@@ -120,35 +117,37 @@ class phpbrew (
   }
 
   # Specify where versions of PHP will be installed.
-  file { '/opt/phpbrew/init':
+  file { '/root/.phpbrew/init':
     content => "export PHPBREW_ROOT=${php_install_dir}",
-    require => Exec['init phpbrew']
-  }->
-  file_line { 'Append a line to /opt/phpbrew/init':
-    path => '/opt/phpbrew/init',
-    line => 'export PHPBREW_HOME=${php_install_dir}',
-  }
-
-  file { "/etc/profile.d/phpbrew.sh":
-    ensure  => present,
-    content => template('phpbrew/phpbrew.sh.erb'),
-    mode    => 'a+x',
     require => Exec['init phpbrew']
   }
   
   # Load phpbrew configuration by default.
-#  file_line { 'add phpbrew to bashrc':
-#    path    => '~/.bashrc',
-#    line    => 'source ~/.phpbrew/bashrc',
-#    require => Exec['init phpbrew'],
-#  }
+  if $system_wide {
+    file { '/opt/phpbrew/bashrc':
+      ensure  => present,
+      content => template('phpbrew/bashrc.erb'),
+      require => Exec['init phpbrew']
+    }
+    
+    file { "/etc/profile.d/phpbrew.sh":
+      ensure  => present,
+      content => template('phpbrew/phpbrew.sh.erb'),
+      require => Exec['init phpbrew']
+    }
+  } else {
+    file_line { 'add phpbrew to bashrc':
+      path    => '/root/.bashrc',
+      line    => 'source /root/.phpbrew/bashrc',
+      require => Exec['init phpbrew'],
+    }
+  }
 
-  
   exec { 'update basbrc':
     command => '/bin/bash'
   }
 
-  file { '/opt/phpbrew/install_extension.sh':
+  file { '/root/.phpbrew/install_extension.sh':
     ensure  => present,
     mode    => 'a+x',
     source  => 'puppet:///modules/phpbrew/install_extension.sh',
