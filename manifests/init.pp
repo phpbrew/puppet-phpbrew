@@ -105,7 +105,7 @@ class phpbrew (
     subscribe   => File['/usr/bin/phpbrew'],
     refreshonly => true,
   }
-
+  
   file { $php_install_dir:
     ensure  => 'directory',
     require => Exec['init phpbrew'],
@@ -124,6 +124,19 @@ class phpbrew (
   
   # Load phpbrew configuration by default.
   if $system_wide {
+    ###################################################################
+    # Init as vagrant user to use when need to switch php 
+    # and use it from vagrant console for example for composer command
+    ###################################################################
+    exec { 'init phpbrew as vagrant':
+      command     => '/usr/bin/phpbrew init',
+      creates     => '/home/vagrant/.phpbrew/bashrc',
+      subscribe   => File['/usr/bin/phpbrew'],
+      refreshonly => true,
+      user        => "vagrant",
+      environment => ["HOME=/home/vagrant"],
+    }
+    
     file { '/opt/phpbrew/bashrc':
       ensure  => present,
       content => template('phpbrew/bashrc.erb'),
