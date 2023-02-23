@@ -16,6 +16,7 @@ class phpbrew (
   Boolean $system_wide = false,
   Array $additional_dependencies = []
 ) {
+<<<<<<< Updated upstream
   case $::operatingsystem {
     centos: {
       if $::operatingsystemmajrelease == '7' {
@@ -32,6 +33,37 @@ class phpbrew (
           'libicu-devel',
           'readline-devel'
         ] + $additional_dependencies
+=======
+	case $::operatingsystem {
+    	centos: {
+    		$dependencies = [
+				'curl',
+				'libxslt-devel',
+				're2c',
+				'libxml2-devel',
+				'php-cli',
+				'libmcrypt-devel',
+				'php-devel',
+				'openssl-devel',
+				'bzip2-devel',
+				'libicu-devel',
+				'readline-devel'
+			]
+    
+			if Integer( $::operatingsystemmajrelease ) >= 8 {
+				$installDevToolsCommand	= '/usr/bin/dnf -y group install "Development Tools"'
+			} elsif $::operatingsystemmajrelease == '7' {
+				$installDevToolsCommand	= '/usr/bin/yum -y groupinstall "Development Tools"'
+			} else {
+		        fail("CentOS support only tested on major version 7 and 8, you are running version '${::operatingsystemmajrelease}'")
+		    }
+        
+			exec { 'Installing Development Tools package group':
+			  command 	=> $installDevToolsCommand,
+			  timeout	=> 3600,
+			  tries		=> 3,
+			}
+>>>>>>> Stashed changes
 
         exec { 'Installing Development Tools package group':
           command => '/usr/bin/yum -y groupinstall Development Tools'
